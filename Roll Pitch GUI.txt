@@ -1,0 +1,40 @@
+import PySimpleGUI as sg
+
+def rotate_servos(roll, pitch):
+    # Implement your servo rotation logic for both roll and pitch here
+    pass
+
+# GUI layout
+layout = [
+    [sg.Text('Enter Roll (0 to 180):'), sg.InputText(key='-ROLL-', size=(10, 1))],
+    [sg.Text('Enter Pitch (0 to 180):'), sg.InputText(key='-PITCH-', size=(10, 1))],
+    [sg.Button('Rotate Servos', key='-ROTATE-')],
+    [sg.Button('About'), sg.Button('QUIT')],
+]
+
+# Create the window
+window = sg.Window('Servo Motor Control', layout)
+
+# Event loop
+while True:
+    event, values = window.read()
+
+    if event == sg.WIN_CLOSED or event == 'QUIT':
+        break
+
+    elif event == 'About':
+        sg.popup('Logic Don\'t Care Software\nServo Motor Ver 1.0\nAugust 2022', title='About')
+
+    elif event == '-ROTATE-':
+        try:
+            roll = int(values['-ROLL-'])
+            pitch = int(values['-PITCH-'])
+            if 0 <= roll <= 180 and 0 <= pitch <= 180:
+                rotate_servos(roll, pitch)
+            else:
+                sg.popup_error('Invalid roll or pitch values. Please enter valid numeric values.')
+        except ValueError:
+            sg.popup_error('Invalid input. Please enter valid numeric values.')
+
+# Close the window
+window.close()

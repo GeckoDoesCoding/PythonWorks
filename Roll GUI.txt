@@ -1,0 +1,42 @@
+import PySimpleGUI as sg
+import serial  # Added the missing import
+
+# Replace 'your_serial_port' with the actual serial port your Arduino is connected to
+ser = serial.Serial('your_serial_port', 9600)
+
+# Function to send the servo angle to Arduino
+def send_angle_to_arduino(angle):
+    # This is a simple example, adjust the pin based on your setup
+    servo_pin = 9
+    
+    # Send servo command to Arduino
+    arduino_command = f"{servo_pin},{int(angle)}\n"
+    ser.write(arduino_command.encode())
+
+# GUI layout
+layout = [
+    [sg.Text('Select Angle (0 to 180):')],
+    [sg.Slider(range=(0, 180), orientation='h', size=(20, 15), default_value=90, key='-ANGLE-')],
+    [sg.Button('Set Angle', key='-SET-')],
+    [sg.Button('About'), sg.Button('QUIT')],
+]
+
+# Create the window
+window = sg.Window('Servo Motor Control', layout)
+
+# Event loop
+while True:
+    event, values = window.read()
+
+    if event == sg.WIN_CLOSED or event == 'QUIT':
+        break
+
+    elif event == 'About':
+        sg.popup('Logic Don\'t Care Software\nServo Motor Ver 1.0\nAugust 2022', title='About')
+
+    elif event == '-SET-':
+        angle = values['-ANGLE-']
+        send_angle_to_arduino(angle)
+
+# Close the window
+window.close()

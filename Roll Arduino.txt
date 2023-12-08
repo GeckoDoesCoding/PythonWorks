@@ -1,0 +1,20 @@
+#include <Servo.h>
+
+Servo myServo;
+
+void setup() {
+  myServo.attach(9);  // Assuming the servo is connected to pin 9
+  Serial.begin(9600);
+}
+
+void loop() {
+  if (Serial.available() > 1) {
+    int roll = Serial.parseInt();
+    int pitch = Serial.parseInt();
+
+    // Use roll and pitch values to control the servo
+    // Implement your servo control logic here
+
+    Serial.flush();  // Clear the serial buffer
+  }
+}
